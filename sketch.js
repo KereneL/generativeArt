@@ -1,30 +1,47 @@
 const canvasWidth = 500;
 const canvasHeight = 500;
 
+let boids = [];
+let target;
+let homing = false;
+
 function setup() {
-    createCanvas(canvasWidth, canvasHeight);
-    background(0);
-    stroke('white');
+    createCanvas(windowWidth, windowHeight);
+    fill(255, 0, 0);
+    noStroke();
 
-    for (let i = 0; i<500; i++){
-        var newStar = new Star();
-        newStar.show();
+    //Seed
+    for (let i = 0; i < 50; i++) {
+        boid = new Boid(random(width), random(height));
+        boids.push(boid);
     }
-  }
-  
-function draw() {
-
+    boid.flock(boids);
 }
 
-class Star{
-    constructor(){
-        this.x = random(canvasWidth);
-        this.y = random(canvasHeight);
-        this.z = Math.pow(random(1.5),2);
-    }
+function draw() {
+    background(0);
 
-    show(){
-        strokeWeight(this.z);
-        point(this.x,this.y);
+    for (var boid of boids) {
+        if (homing) {
+            target = createVector(mouseX, mouseY);
+            circle(target.x, target.y, 7.5);
+            boid.seek(target);
+        }
+        else {
+            boid.flock(boids);
+        }
+        boid.edges();
+        boid.update();
+        boid.show();
     }
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+function mousePressed() {
+    homing = true;
+}
+function mouseReleased() {
+    homing = false;
 }
