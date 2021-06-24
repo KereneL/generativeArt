@@ -7,17 +7,24 @@ function setup() {
     stroke('white');
 
     for (let i = 0; i<500; i++){
-        randomPoint()
+        var newStar = new Star();
+        newStar.show();
     }
   }
+  
 function draw() {
 
 }
 
-function randomPoint(){
-    var rndX = random(canvasWidth);
-    var rndY = random(canvasHeight);
-    var rndW = Math.pow(random(1.5),2);
-    strokeWeight(rndW);
-    point(rndX,rndY);
+class Star{
+    constructor(){
+        this.x = random(canvasWidth);
+        this.y = random(canvasHeight);
+        this.z = Math.pow(random(1.5),2);
+    }
+
+    show(){
+        strokeWeight(this.z);
+        point(this.x,this.y);
+    }
 }
